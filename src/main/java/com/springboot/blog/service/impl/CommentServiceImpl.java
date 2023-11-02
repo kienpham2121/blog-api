@@ -1,6 +1,7 @@
 package com.springboot.blog.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.springboot.blog.entity.Comment;
 import com.springboot.blog.entity.Post;
-import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.payload.CommentDto;
 import com.springboot.blog.repository.CommentRepository;
 import com.springboot.blog.repository.PostRepository;
@@ -49,8 +49,7 @@ public class CommentServiceImpl implements CommentService {
 		List<Comment> comments = commentRepository.findByPostId(Long.valueOf(postId));
 
 		// convert list of comment entities to list of comment dto's
-		return comments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
-		return null;
+		return comments.stream().map(comment -> mapper.map(comment, CommentDto.class)).collect(Collectors.toList());
 	}
 
 	@Override
